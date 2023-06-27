@@ -1,0 +1,106 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- <script src="script.js"></script> -->
+</head>
+
+<body>
+    <header class="text-gray-600 body-font">
+        <div class="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
+            <a class="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round"
+                    stroke-linejoin="round" stroke-width="2" class="w-10 h-10 text-white p-2 bg-indigo-500 rounded-full"
+                    viewBox="0 0 24 24">
+                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                </svg>
+                <span class="ml-3 text-xl">The Imaginator</span>
+            </a>
+            <nav
+                class="md:mr-auto md:ml-4 md:py-1 md:pl-4 md:border-l md:border-gray-400	flex flex-wrap items-center text-base justify-center">
+                <a class="mr-5 hover:text-gray-900">Orange Lamborgini</a>
+                <a class="mr-5 hover:text-gray-900">Black Ferrari</a>
+                <!-- <a class="mr-5 hover:text-gray-900">Third Link</a>
+            <a class="mr-5 hover:text-gray-900">Fourth Link</a> -->
+            </nav>
+            <button
+                class="inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0">Feedback
+                <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    class="w-4 h-4 ml-1" viewBox="0 0 24 24">
+                    <path d="M5 12h14M12 5l7 7-7 7"></path>
+                </svg>
+            </button>
+        </div>
+        <section class="text-gray-600 body-font">
+            <div class="container px-5 py-24 mx-auto flex flex-wrap items-center">
+                <div class="lg:w-2/6 md:w-1/2 bg-gray-100 rounded-lg p-8 flex flex-col md:ml-auto w-full mt-10 md:mt-0">
+                    <h2 class="text-gray-900 text-lg font-medium title-font mb-5">Enter Prompt</h2>
+                    <div class="relative mb-4">
+                        <label for="full-name" class="leading-7 text-sm text-gray-600">Your Prompt</label>
+                        <input type="text" id="imgprompt" name="imgprompt"
+                            class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                    </div>
+                    <button
+                        class="text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg"
+                        id="submitbtn" type="submit">Submit</button>
+                    <p class="text-xs text-gray-500 mt-3">The Imagintor is imagining the best possible results!!!</p>
+                </div>
+            </div>
+        </section>
+        <section class="text-gray-600 body-font">
+            <div class="container px-5 py-24 mx-auto flex flex-wrap">
+                <div class="lg:w-2/3 mx-auto imageCont">
+                    <div class="flex flex-wrap -mx-2">
+                        <div class="px-2 w-1/2 ">
+                            <div class="flex flex-wrap w-full bg-gray-100 sm:py-24 py-16 sm:px-10 px-6 relative">
+                                <img alt="gallery"
+                                    class="w-full object-cover h-full object-center block  absolute inset-0"
+                                    src="https://dummyimage.com/542x460">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="px-2 w-1/2">
+                        <div class="flex flex-wrap w-full bg-gray-100 sm:py-24 py-16 sm:px-10 px-6 relative">
+                            <img alt="gallery"
+                                class="w-full object-cover h-full object-center block  absolute inset-0"
+                                src="https://dummyimage.com/542x420">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+            </div>
+        </section>
+    </header>
+    <script>
+        submitbtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            const promptTxt = imgprompt.value;
+            fetch("/generateimages/" + promptTxt)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    const images = data.data;
+                    const container = document.querySelector(".imageCont");
+                    let totalHtml = "";
+
+
+                    images.forEach(image => {
+                        let html = `<div class="flex flex-wrap w-full bg-gray-100 sm:py-24 py-16 sm:px-10 px-6 relative">
+                                <img alt="gallery"
+                                    class="w-full object-cover h-full object-center block  absolute inset-0"
+                                    src="${image.url}">
+                            </div>`;
+                        totalHtml += html;
+
+                    });
+                    container.innerHTML = totalHtml;
+                });
+        })
+    </script>
+</body>
+
+</html>
